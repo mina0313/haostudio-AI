@@ -16846,6 +16846,7 @@ fieldset input,
   cursor: pointer;
   font-size: 16px;
   font-weight: 950;
+  white-space: nowrap;
 }
 
 .wizard-page .wizard-prev {
@@ -16864,7 +16865,7 @@ fieldset input,
 }
 
 .wizard-page .wizard-next span {
-  margin-left: 14px;
+  margin-left: 10px;
   font-size: 22px;
   line-height: 1;
 }
