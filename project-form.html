@@ -236,6 +236,92 @@
       <div class="submit-message" id="submitMessage"></div>
       <a class="wizard-home-link" href="index.html">관리자 화면에서 접수 내용 확인하기</a>
     </section>
+
+    <section class="ai-result-page" id="resultScreen" aria-live="polite">
+      <header class="result-hero">
+        <p>AI 상세페이지 기획안</p>
+        <h1 id="resultProductName">제품명</h1>
+        <span id="resultMeta">브랜드 상세페이지 원고 초안</span>
+      </header>
+
+      <section class="result-card result-summary-card">
+        <div>
+          <span>01</span>
+          <h2>브랜드 핵심 방향</h2>
+        </div>
+        <p id="resultHeroSentence">고객을 사로잡는 첫 문장이 들어갑니다.</p>
+      </section>
+
+      <section class="result-card">
+        <div>
+          <span>02</span>
+          <h2>타깃 고객과 구매 동기</h2>
+        </div>
+        <dl class="result-definition">
+          <div>
+            <dt>타깃 고객</dt>
+            <dd id="resultTarget">입력한 타깃 고객을 바탕으로 정리됩니다.</dd>
+          </div>
+          <div>
+            <dt>페이지 톤</dt>
+            <dd id="resultTone">선택한 컨셉과 스타일이 반영됩니다.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="result-card">
+        <div>
+          <span>03</span>
+          <h2>상세페이지 핵심 카피</h2>
+        </div>
+        <article class="result-copy-box">
+          <strong>메인 헤드라인</strong>
+          <p id="resultHeadline">제품의 핵심 가치를 한 문장으로 보여줍니다.</p>
+        </article>
+        <article class="result-copy-box">
+          <strong>핵심 경쟁력</strong>
+          <p id="resultStrength">구매를 결정짓는 차별점을 정리합니다.</p>
+        </article>
+      </section>
+
+      <section class="result-card">
+        <div>
+          <span>04</span>
+          <h2>추천 섹션 구성</h2>
+        </div>
+        <ol class="result-section-list" id="resultSections"></ol>
+      </section>
+
+      <section class="result-card">
+        <div>
+          <span>05</span>
+          <h2>신뢰와 구매 전환 포인트</h2>
+        </div>
+        <div class="result-point-grid">
+          <article>
+            <b>품질/인증</b>
+            <p id="resultTrust">품질과 신뢰 근거가 정리됩니다.</p>
+          </article>
+          <article>
+            <b>혜택/이벤트</b>
+            <p id="resultBenefit">구매 혜택이 정리됩니다.</p>
+          </article>
+          <article>
+            <b>리뷰 키워드</b>
+            <p id="resultReview">리뷰 키워드가 정리됩니다.</p>
+          </article>
+          <article>
+            <b>옵션 구성</b>
+            <p id="resultOptions">옵션 정보가 정리됩니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="result-actions">
+        <a href="project-form.html">다시 작성하기</a>
+        <a href="index.html">관리자에서 시안 생성하기</a>
+      </footer>
+    </section>
   </main>
 
   <script src="project-form.js"></script>

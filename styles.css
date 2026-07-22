@@ -16807,6 +16807,230 @@ fieldset input,
   text-decoration: none;
 }
 
+.wizard-page .ai-result-page {
+  display: none;
+  padding: 28px 0 70px;
+}
+
+.wizard-page .ai-result-page.active {
+  display: block;
+}
+
+.wizard-page .result-hero {
+  border-bottom: 4px solid #111;
+  padding: 30px 0 28px;
+}
+
+.wizard-page .result-hero p {
+  margin: 0 0 12px;
+  color: #d10f32;
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+}
+
+.wizard-page .result-hero h1 {
+  margin: 0;
+  color: #050505;
+  font-size: 34px;
+  font-weight: 950;
+  line-height: 1.22;
+}
+
+.wizard-page .result-hero span {
+  display: block;
+  margin-top: 14px;
+  color: #777;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.wizard-page .result-card {
+  margin-top: 22px;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.04);
+}
+
+.wizard-page .result-summary-card {
+  border-color: #ffd1da;
+  background: #fff5f7;
+}
+
+.wizard-page .result-card > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.wizard-page .result-card > div:first-child span {
+  display: inline-grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.wizard-page .result-card h2 {
+  margin: 0;
+  color: #050505;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.wizard-page .result-card p {
+  margin: 0;
+  color: #222;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+.wizard-page .result-definition {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.wizard-page .result-definition div {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 14px;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+.wizard-page .result-definition div:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.wizard-page .result-definition dt {
+  color: #d10f32;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.wizard-page .result-definition dd {
+  margin: 0;
+  color: #222;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.wizard-page .result-copy-box {
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+
+.wizard-page .result-copy-box + .result-copy-box {
+  margin-top: 18px;
+}
+
+.wizard-page .result-copy-box strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #d10f32;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.wizard-page .result-section-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wizard-page .result-section-list li {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 14px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.wizard-page .result-section-list span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  background: #d10f32;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.wizard-page .result-section-list strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #050505;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.wizard-page .result-point-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px !important;
+  margin: 0 !important;
+}
+
+.wizard-page .result-point-grid article {
+  min-height: 128px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.wizard-page .result-point-grid b {
+  display: block;
+  margin-bottom: 8px;
+  color: #d10f32;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.wizard-page .result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.wizard-page .result-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 62px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  color: #050505;
+  font-size: 15px;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.wizard-page .result-actions a:last-child {
+  background: #d10f32;
+  color: #fff;
+}
+
 @media (max-width: 640px) {
   .wizard-page .ai-wizard-shell {
     padding-inline: 18px;
@@ -16827,5 +17051,15 @@ fieldset input,
   .wizard-page .wizard-submit {
     min-height: 60px;
     font-size: 14px;
+  }
+
+  .wizard-page .result-point-grid,
+  .wizard-page .result-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .wizard-page .result-definition div {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
