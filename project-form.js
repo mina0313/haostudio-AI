@@ -115,11 +115,32 @@ function readProjectList() {
   }
 }
 
+function isValidContactName(name = "") {
+  const value = name.trim();
+  return value.length >= 2 && /[A-Za-z가-힣]/.test(value) && !/^\d+$/.test(value);
+}
+
+function normalizePhone(phone = "") {
+  return phone.replace(/[^\d]/g, "");
+}
+
+function isValidPhone(phone = "") {
+  const digits = normalizePhone(phone);
+  return /^0\d{8,10}$/.test(digits);
+}
+
+function isValidEmail(email = "") {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+}
+
 function validateStep(step = currentStep) {
   if (step === 1) {
     if (!fieldValue("contactName")) return "이름을 입력해주세요.";
+    if (!isValidContactName(fieldValue("contactName"))) return "이름은 한글 또는 영문 2자 이상으로 입력해주세요.";
     if (!fieldValue("contactInfo")) return "연락처를 입력해주세요.";
+    if (!isValidPhone(fieldValue("contactInfo"))) return "연락처는 숫자 기준 9~11자리로 입력해주세요. 예: 01012345678";
     if (!fieldValue("email")) return "이메일을 입력해주세요.";
+    if (!isValidEmail(fieldValue("email"))) return "이메일 형식에 맞게 입력해주세요. 예: sample@email.com";
     if (!fieldValue("productName")) return "제품명을 입력해주세요.";
   }
   if (step === 2 && !fieldValue("heroSentence")) return "고객을 사로잡는 첫 문장을 입력해주세요.";
