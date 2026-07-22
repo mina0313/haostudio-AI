@@ -1,0 +1,55 @@
+{
+  "project": "hoabi-litchi-honey-stick",
+  "source": "MYBOX.zip",
+  "usage": "A/B detail-page draft image slots",
+  "assets": [
+    {
+      "slot": "hero",
+      "role": "main product hero / 30p package composition",
+      "file": "hoabi-open-box-30p-crop.png",
+      "sourceFile": "20251217 호아비 누끼 003.png"
+    },
+    {
+      "slot": "feature",
+      "role": "single stick detail / portability proof",
+      "file": "hoabi-stick-single-crop.png",
+      "sourceFile": "20251217 호아비 누끼 001.png"
+    },
+    {
+      "slot": "package",
+      "role": "premium package front / brand mood",
+      "file": "hoabi-package-front-crop.png",
+      "sourceFile": "20251218 호아비 누끼 001.png"
+    },
+    {
+      "slot": "boxYellow",
+      "role": "yellow package side / color variation",
+      "file": "hoabi-box-yellow-crop.png",
+      "sourceFile": "20251218 호아비 누끼 002.png"
+    },
+    {
+      "slot": "boxPink",
+      "role": "pink package side / color variation",
+      "file": "hoabi-box-pink-crop.png",
+      "sourceFile": "20251218 호아비 누끼 003.png"
+    },
+    {
+      "slot": "giftBag",
+      "role": "gift packaging / premium gift scene",
+      "file": "hoabi-shopping-bag-crop.png",
+      "sourceFile": "20251218 호아비 누끼 004.png"
+    },
+    {
+      "slot": "info",
+      "role": "product information table / compliance check",
+      "file": "hoabi-product-info.jpg",
+      "sourceFile": "2512_호아비리치꿀스틱_(30P)_최종_11.jpg"
+    }
+  ],
+  "nextNeededShots": [
+    "litchi ingredient close-up with honey texture",
+    "daily routine consumption scene",
+    "gift handover scene",
+    "desktop or bag portability scene"
+  ]
+}
