@@ -11551,6 +11551,72 @@ fieldset input,
   font-size: 18px;
 }
 
+.customer-import-card {
+  width: min(620px, 100%);
+}
+
+.customer-import-list {
+  display: grid;
+  gap: 10px;
+}
+
+.customer-import-item {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 15px;
+  background: #fffaf3;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.customer-import-item:hover,
+.customer-import-item:focus-visible {
+  border-color: var(--accent);
+  background: #fff5ea;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(198, 107, 45, 0.12);
+}
+
+.customer-import-item span {
+  color: var(--accent-dark);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.customer-import-item strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.customer-import-item small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.customer-import-empty {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: #fffaf3;
+}
+
+.customer-import-empty strong {
+  display: block;
+  color: var(--accent-dark);
+}
+
+.customer-import-empty p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .tone-preset-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

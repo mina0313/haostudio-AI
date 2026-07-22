@@ -682,6 +682,19 @@
     </section>
   </main>
 
+  <div class="studio-modal" id="customerImportModal" hidden>
+    <div class="studio-modal-card compact-modal customer-import-card" role="dialog" aria-modal="true" aria-labelledby="customerImportTitle">
+      <div class="studio-modal-head">
+        <div>
+          <p class="eyebrow">고객 작성 내용</p>
+          <strong id="customerImportTitle">불러올 업체를 선택하세요</strong>
+        </div>
+        <button class="secondary small" type="button" data-close-customer-import>닫기</button>
+      </div>
+      <div class="customer-import-list" id="customerImportList"></div>
+    </div>
+  </div>
+
   <script src="data/detail-template-dataset.js"></script>
   <script src="data/company-reference-dataset.js"></script>
   <script src="data/company-reference-auto.js"></script>

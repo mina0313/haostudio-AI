@@ -888,7 +888,75 @@ function renderCustomerProjects() {
   $$(".import-customer-project").forEach((button) => {
     button.addEventListener("click", () => importCustomerProjectById(button.dataset.id));
   });
-}function updateCustomerProjectStatus(id, status) {
+}
+
+function customerProjectCompanyName(project) {
+  return project.clientName || project.companyName || project.businessName || project.brandName || project.contactName || "업체명 미입력";
+}
+
+function customerProjectMeta(project) {
+  return [
+    project.category || "카테고리 미선택",
+    project.savedAt || "저장일 없음",
+    project.status || "신규 접수",
+  ].filter(Boolean).join(" · ");
+}
+
+function renderCustomerImportChoices() {
+  const list = $("#customerImportList");
+  if (!list) return;
+  const projects = readCustomerProjects();
+  if (!projects.length) {
+    list.innerHTML = `
+      <div class="customer-import-empty">
+        <strong>아직 불러올 고객 작성 내용이 없습니다.</strong>
+        <p>고객 작성폼에서 저장된 내용이 생기면 업체명으로 선택할 수 있습니다.</p>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = projects.map((project, index) => `
+    <button class="customer-import-item" type="button" data-id="${escapeHtml(project.id || "")}" data-index="${index}">
+      <span>${escapeHtml(customerProjectCompanyName(project))}</span>
+      <strong>${escapeHtml(project.productName || "제품명 미입력")}</strong>
+      <small>${escapeHtml(customerProjectMeta(project))}</small>
+    </button>
+  `).join("");
+
+  $$(".customer-import-item").forEach((button) => {
+    button.addEventListener("click", () => importCustomerProjectFromChoice(button.dataset.id, button.dataset.index));
+  });
+}
+
+function openCustomerImportModal() {
+  renderCustomerImportChoices();
+  const modal = $("#customerImportModal");
+  if (modal) modal.hidden = false;
+}
+
+function closeCustomerImportModal() {
+  const modal = $("#customerImportModal");
+  if (modal) modal.hidden = true;
+}
+
+function importCustomerProjectFromChoice(id, index) {
+  const projects = readCustomerProjects();
+  const project = projects.find((item) => item.id === id) || projects[Number(index)];
+  if (!project) return;
+  localStorage.setItem(CUSTOMER_PROJECT_KEY, JSON.stringify(project));
+  closeCustomerImportModal();
+  importCustomerProject();
+  if (project.id) {
+    updateCustomerProjectStatus(project.id, "확인 중");
+    return;
+  }
+  projects[Number(index)] = { ...project, status: "확인 중" };
+  writeCustomerProjects(projects);
+  renderCustomerProjects();
+}
+
+function updateCustomerProjectStatus(id, status) {
   const projects = readCustomerProjects().map((project) => project.id === id ? { ...project, status } : project);
   writeCustomerProjects(projects);
   renderCustomerProjects();
@@ -9282,7 +9350,7 @@ if (planningOptionsMount && optionsPanel) {
 }
 
 $("#loadSample")?.addEventListener("click", () => loadSample());
-$("#importCustomerProject")?.addEventListener("click", () => importCustomerProject());
+$("#importCustomerProject")?.addEventListener("click", () => openCustomerImportModal());
 $("#generateAll")?.addEventListener("click", () => generateAll());
 $("#generatePlan")?.addEventListener("click", () => generatePlan());
 $("#generateDrafts")?.addEventListener("click", () => generateDrafts());
@@ -9313,6 +9381,12 @@ $$("[data-close-modal]").forEach((button) => {
     const id = button.dataset.closeModal;
     if ($(id.startsWith("#") ? id : `#${id}`)) $(id.startsWith("#") ? id : `#${id}`).hidden = true;
   });
+});
+$$("[data-close-customer-import]").forEach((button) => {
+  button.addEventListener("click", closeCustomerImportModal);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeCustomerImportModal();
 });
 $$("[data-tone-preset]").forEach((button) => {
   button.addEventListener("click", () => {
