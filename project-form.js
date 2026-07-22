@@ -1,66 +1,95 @@
 const CUSTOMER_PROJECT_KEY = "customerProjectInput";
 const CUSTOMER_PROJECT_LIST_KEY = "customerProjectList";
+const TOTAL_STEPS = 5;
 
-const CATEGORY_GUIDES = {
-  "식품/건강식품": {
-    title: "식품/건강식품 시안 방향",
-    description: "원료, 구성, 섭취 편의성, 선물 수요, 신뢰 정보를 중심으로 A/B 시안을 구성합니다.",
-  },
-  "뷰티/화장품": {
-    title: "뷰티/화장품 시안 방향",
-    description: "브랜드 무드, 사용감, 사용 장면, 제형/향기/텍스처를 감각적으로 보여줍니다.",
-  },
-  "생활용품": {
-    title: "생활용품 시안 방향",
-    description: "문제 상황, 해결 방식, 사용법, 비교 포인트, 구매 판단 정보를 명확하게 정리합니다.",
-  },
-  "패션/잡화": {
-    title: "패션/잡화 시안 방향",
-    description: "착용/연출 이미지, 소재 디테일, 스타일링, 옵션 정보를 중심으로 구성합니다.",
-  },
-  "전자/디지털": {
-    title: "전자/디지털 시안 방향",
-    description: "기능, 스펙, 사용 장면, 비교 정보, 구매 전 확인 사항을 빠르게 이해시키는 구성을 씁니다.",
-  },
-  "유아/키즈": {
-    title: "유아/키즈 시안 방향",
-    description: "안전성, 보호자 관점, 사용 장면, 친근한 분위기를 함께 반영합니다.",
-  },
-  "반려동물": {
-    title: "반려동물 시안 방향",
-    description: "보호자의 고민, 안전성, 사용 장면, 신뢰 정보를 중심으로 구성합니다.",
-  },
-  "서비스/교육": {
-    title: "서비스/교육 시안 방향",
-    description: "문제 상황, 서비스 과정, 기대 효과, 신뢰 근거를 명확하게 보여줍니다.",
-  },
-  "기타": {
-    title: "기본 시안 방향",
-    description: "제품 특징과 요청사항을 기준으로 가장 적합한 상세페이지 구조를 선택합니다.",
-  },
-};
+let currentStep = 1;
+
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+function fieldValue(name) {
+  return document.querySelector(`[data-field="${name}"]`)?.value.trim() || "";
+}
+
+function setError(message = "") {
+  const error = $("#formError");
+  if (error) error.textContent = message;
+}
+
+function updateProgress() {
+  const percent = Math.round((currentStep / TOTAL_STEPS) * 100);
+  $("#stepLabel").textContent = `STEP ${currentStep} / ${TOTAL_STEPS}`;
+  $("#stepPercent").textContent = `${percent}% 진행됨`;
+  $("#progressBar").style.width = `${percent}%`;
+
+  $$(".wizard-step").forEach((step) => {
+    step.classList.toggle("active", Number(step.dataset.step) === currentStep);
+  });
+
+  $("#prevStep").style.display = currentStep === 1 ? "none" : "inline-flex";
+  $("#nextStep").style.display = currentStep === TOTAL_STEPS ? "none" : "inline-flex";
+  $("#submitProjectForm").style.display = currentStep === TOTAL_STEPS ? "inline-flex" : "none";
+  setError("");
+}
+
+function checkedValues(group) {
+  return $$(`[data-group="${group}"]`).filter((field) => field.checked).map((field) => field.value);
+}
+
+function selectedStyleTone() {
+  return document.querySelector('input[name="styleTone"]:checked')?.value || "정보형 (스펙)";
+}
+
+function optionRows() {
+  return $$("#optionBuilder .option-row").map((row) => {
+    const value = (name) => row.querySelector(`[data-option-field="${name}"]`)?.value.trim() || "";
+    return {
+      name: value("name"),
+      volume: value("volume"),
+      price: value("price"),
+    };
+  }).filter((item) => item.name || item.volume || item.price);
+}
 
 function collectProjectForm() {
   const data = {};
-  document.querySelectorAll("[data-field]").forEach((field) => {
+  $$("[data-field]").forEach((field) => {
     data[field.dataset.field] = field.value.trim();
   });
-  document.querySelectorAll("[data-group]").forEach((field) => {
+  $$("[data-group]").forEach((field) => {
     const group = field.dataset.group;
     if (!data[group]) data[group] = [];
     if (field.checked) data[group].push(field.value);
   });
-  document.querySelectorAll("[data-file-group]").forEach((field) => {
+  $$("[data-file-group]").forEach((field) => {
     const group = field.dataset.fileGroup;
     data[group] = Array.from(field.files || []).map((file) => file.name);
   });
-  data.oneLine = data.clientRequests || "";
-  data.features = data.clientRequests || "";
-  data.emphasis = data.clientRequests || "";
-  data.mustInclude = data.productName || "";
-  data.source = "고객 상세페이지 제작 접수폼";
-  data.customerInputVersion = "simple-intake-v3";
-  data.status = "신규 접수";
+
+  data.styleTone = selectedStyleTone();
+  data.options = optionRows();
+  data.oneLine = data.heroSentence || data.coreStrength || data.productName || "";
+  data.features = [
+    data.coreStrength,
+    checkedValues("strengthTags").join(", "),
+    data.productionTrust,
+    data.purchaseBenefit,
+    data.reviewKeywords,
+  ].filter(Boolean).join("\n");
+  data.emphasis = data.coreStrength || data.heroSentence || "";
+  data.mustInclude = [data.productName, data.seoKeyword].filter(Boolean).join(", ");
+  data.clientRequests = [
+    data.heroSentence,
+    data.coreStrength,
+    data.productionTrust,
+    data.purchaseBenefit,
+    data.reviewKeywords,
+  ].filter(Boolean).join("\n\n");
+  data.references = data.seoKeyword || "";
+  data.imageMemo = data.styleTone;
+  data.source = "AI 상세페이지 5단계 원고 생성폼";
+  data.customerInputVersion = "wizard-intake-v1";
+  data.status = "원고 생성 완료";
   return data;
 }
 
@@ -72,29 +101,41 @@ function readProjectList() {
   }
 }
 
-function validateProject(data) {
-  if (!data.productName) return "제품명을 입력해주세요.";
-  if (!data.category) return "카테고리를 선택해주세요.";
-  if (!data.clientRequests) return "요청사항을 입력해주세요.";
-  if (!data.contactInfo && !data.contactName) return "담당자명 또는 연락처를 입력해주세요.";
-  const hasProductImage = (data.productImages || []).length > 0 || (data.imageAssets || []).includes("제품 이미지 있음");
-  if (!hasProductImage) return "제품 이미지를 첨부하거나 '제품 이미지 있음'을 선택해주세요.";
+function validateStep(step = currentStep) {
+  if (step === 1) {
+    if (!fieldValue("contactName")) return "이름을 입력해주세요.";
+    if (!fieldValue("contactInfo")) return "연락처를 입력해주세요.";
+    if (!fieldValue("email")) return "이메일을 입력해주세요.";
+    if (!fieldValue("productName")) return "제품명을 입력해주세요.";
+  }
+  if (step === 2 && !fieldValue("heroSentence")) return "고객을 사로잡는 첫 문장을 입력해주세요.";
+  if (step === 3) {
+    if (!fieldValue("coreStrength")) return "핵심 경쟁력을 입력해주세요.";
+    if (!checkedValues("strengthTags").length) return "제품 주요 강점을 하나 이상 선택해주세요.";
+  }
+  if (step === 4 && !fieldValue("productionTrust")) return "생산 및 인증 과정 내용을 입력해주세요.";
   return "";
 }
 
-function saveProjectForm() {
+function validateProject(data) {
+  for (let step = 1; step <= 4; step += 1) {
+    const message = validateStep(step);
+    if (message) return message;
+  }
+  if (!data.options.length) return "옵션 정보를 하나 이상 입력해주세요.";
+  return "";
+}
+
+function saveProjectForm(event) {
+  event?.preventDefault();
   const data = collectProjectForm();
-  const error = document.getElementById("formError");
-  const message = document.getElementById("submitMessage");
   const validation = validateProject(data);
 
   if (validation) {
-    error.textContent = validation;
-    message.textContent = "";
+    setError(validation);
     return;
   }
 
-  error.textContent = "";
   const project = {
     id: `customer-project-${Date.now()}`,
     ...data,
@@ -105,32 +146,58 @@ function saveProjectForm() {
   localStorage.setItem(CUSTOMER_PROJECT_LIST_KEY, JSON.stringify(projectList));
   localStorage.setItem(CUSTOMER_PROJECT_KEY, JSON.stringify(project));
 
-  message.innerHTML = `
-    <strong>접수가 완료되었습니다.</strong>
-    <p>담당자가 접수 내용을 확인한 뒤 상세페이지 A/B 시안을 준비합니다. 이후 시안 확인 연락을 드리겠습니다.</p>
+  $("#projectWizard").classList.add("is-complete");
+  $("#generatingScreen").classList.add("active");
+  $("#submitMessage").innerHTML = `
+    <strong>원고 생성 요청이 완료되었습니다.</strong>
+    <p>관리자 화면에서 접수 내용을 불러와 A/B 상세페이지 시안을 바로 생성할 수 있습니다.</p>
   `;
 }
 
-function applyCategoryGuide() {
-  const category = document.getElementById("categorySelect")?.value || "";
-  const guide = CATEGORY_GUIDES[category];
-  const guideBox = document.getElementById("categoryGuide");
-  if (!guideBox) return;
-
-  if (!guide) {
-    guideBox.innerHTML = `
-      <strong>카테고리를 선택하면 담당자가 업종에 맞는 시안 방향을 빠르게 잡을 수 있습니다.</strong>
-      <p>복잡한 기획 항목을 고르지 않아도 제품 정보와 요청사항만으로 A/B 시안을 준비합니다.</p>
-    `;
+function goNext() {
+  const message = validateStep();
+  if (message) {
+    setError(message);
     return;
   }
-
-  guideBox.innerHTML = `
-    <strong>${guide.title}</strong>
-    <p>${guide.description}</p>
-  `;
+  currentStep = Math.min(TOTAL_STEPS, currentStep + 1);
+  updateProgress();
 }
 
-document.getElementById("submitProjectForm")?.addEventListener("click", saveProjectForm);
-document.getElementById("categorySelect")?.addEventListener("change", applyCategoryGuide);
-applyCategoryGuide();
+function goPrev() {
+  currentStep = Math.max(1, currentStep - 1);
+  updateProgress();
+}
+
+function addOptionRow() {
+  const row = document.createElement("label");
+  row.className = "option-row";
+  row.innerHTML = `
+    <input data-option-field="name" placeholder="옵션명">
+    <input data-option-field="volume" placeholder="용량">
+    <input data-option-field="price" placeholder="가격">
+    <button type="button" class="remove-option" aria-label="옵션 삭제">×</button>
+  `;
+  $("#optionBuilder").appendChild(row);
+}
+
+function handleOptionRemove(event) {
+  const button = event.target.closest(".remove-option");
+  if (!button) return;
+  const rows = $$("#optionBuilder .option-row");
+  if (rows.length <= 1) {
+    rows[0].querySelectorAll("input").forEach((input) => {
+      input.value = "";
+    });
+    return;
+  }
+  button.closest(".option-row").remove();
+}
+
+$("#nextStep")?.addEventListener("click", goNext);
+$("#prevStep")?.addEventListener("click", goPrev);
+$("#addOption")?.addEventListener("click", addOptionRow);
+$("#optionBuilder")?.addEventListener("click", handleOptionRemove);
+$("#projectWizard")?.addEventListener("submit", saveProjectForm);
+
+updateProgress();
