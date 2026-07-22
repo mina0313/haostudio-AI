@@ -173,9 +173,9 @@ function addOptionRow() {
   const row = document.createElement("label");
   row.className = "option-row";
   row.innerHTML = `
-    <input data-option-field="name" placeholder="옵션명">
-    <input data-option-field="volume" placeholder="용량">
-    <input data-option-field="price" placeholder="가격">
+    <input data-option-field="name" placeholder="구성 (예: [3종 구성] 닭가슴살 도시락 세트)">
+    <input data-option-field="volume" placeholder="내용량 : (예: 닭가슴살 도시락 3종 (각 1팩 / 총 3팩))">
+    <input data-option-field="price" placeholder="가격 (예: 14,900원)">
     <button type="button" class="remove-option" aria-label="옵션 삭제">×</button>
   `;
   $("#optionBuilder").appendChild(row);
