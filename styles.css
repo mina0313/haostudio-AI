@@ -16318,10 +16318,10 @@ fieldset input,
 }
 
 .wizard-page .ai-wizard-shell {
-  width: min(100%, 640px);
+  width: min(100%, 900px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 0 22px 48px;
+  padding: 0 34px 56px;
   background: #fff;
   color: #050505;
 }
@@ -16707,9 +16707,9 @@ fieldset input,
 
 .wizard-page .compact-upload {
   display: grid;
-  grid-template-columns: repeat(2, 190px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  width: fit-content;
+  width: 100%;
   margin-top: 20px;
 }
 
@@ -16720,7 +16720,7 @@ fieldset input,
   align-items: center;
   justify-content: center;
   min-height: 80px;
-  width: 190px;
+  width: 100%;
   margin: 0 !important;
   border: 1px dashed #e0c89c;
   border-radius: 8px;
@@ -16737,7 +16737,7 @@ fieldset input,
 
 .wizard-page .upload-hint {
   display: block;
-  max-width: 150px;
+  max-width: 280px;
   color: #8a7a60;
   font-size: 12px;
   font-weight: 800;
@@ -17154,7 +17154,8 @@ fieldset input,
 
   .wizard-page .wizard-grid.two,
   .wizard-page .style-choice-grid,
-  .wizard-page .option-row {
+  .wizard-page .option-row,
+  .wizard-page .compact-upload {
     grid-template-columns: 1fr;
   }
 
