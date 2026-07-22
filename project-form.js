@@ -404,22 +404,23 @@ function developedCopyPlan(data) {
   const trust = shortText(data.productionTrust, plan.categoryProfile.proof);
   const benefit = shortText(data.purchaseBenefit, "구매 전 망설임을 줄이는 구성과 혜택");
   const review = shortText(data.reviewKeywords, "편안함, 만족감, 재구매 의향");
+  const toneGuide = styleManuscriptGuide(plan.styleProfile);
   return [
     {
       label: "첫 화면 문구",
-      copy: `${target}에게 ${productName}을 선택해야 하는 이유를 첫 화면에서 바로 보여줍니다. ${shortText(data.heroSentence, `${productName}의 핵심 가치를 가장 먼저 각인시키는 문장`)}을 메인 카피로 다듬어 구매 기대감을 만듭니다.`,
+      copy: `${target}에게 ${productName}을 선택해야 하는 이유를 첫 화면에서 바로 보여줍니다. ${shortText(data.heroSentence, `${productName}의 핵심 가치를 가장 먼저 각인시키는 문장`)}을 ${toneGuide.hero} 방향으로 다듬습니다.`,
     },
     {
       label: "구매 설득 문구",
-      copy: `${strength} 이 강점을 단순 설명이 아니라 “왜 지금 필요한지”로 풀어내고, 제품의 차별점을 고객의 고민 해결 문장으로 연결합니다.`,
+      copy: `${strength} 이 강점을 단순 설명이 아니라 ${toneGuide.point} 방식으로 풀어내고, 제품의 차별점을 고객의 고민 해결 문장으로 연결합니다.`,
     },
     {
       label: "신뢰 보강 문구",
-      copy: `${trust} 이 내용은 상세페이지 중반 이후 신뢰 카드와 근거 섹션으로 정리해, 고객이 구매 전에 확인하고 싶은 불안 요소를 줄이는 방향으로 사용합니다.`,
+      copy: `${trust} 이 내용은 ${toneGuide.trust} 흐름으로 정리해, 고객이 구매 전에 확인하고 싶은 불안 요소를 줄이는 방향으로 사용합니다.`,
     },
     {
       label: "전환 마감 문구",
-      copy: `${benefit}을 마지막 CTA 앞에 배치하고, 리뷰 키워드 “${review}”를 자연스럽게 섞어 선택을 밀어주는 마감 문구로 구성합니다.`,
+      copy: `${benefit}을 마지막 CTA 앞에 배치하고, 리뷰 키워드 “${review}”를 ${toneGuide.closing} 톤으로 섞어 마감 문구로 구성합니다.`,
     },
   ];
 }
@@ -470,6 +471,96 @@ function pointList(items = [], fallback = []) {
   return (items.length ? items : fallback).slice(0, 5);
 }
 
+function styleManuscriptGuide(styleProfile) {
+  const title = styleProfile.title;
+  if (title === "구매전환형") {
+    return {
+      hero: "혜택과 선택 이유가 즉시 보이는 직관적인 세일즈 카피",
+      story: "긴 서사보다 제품이 필요한 이유를 빠르게 제시",
+      empathy: "고민, 해결, 구매 행동으로 바로 이어지는 흐름",
+      point: "숫자, 비교, 혜택이 먼저 보이게 압축",
+      usage: "구매 후 바로 쓰는 장면을 짧게 제안",
+      trust: "망설임을 줄이는 근거와 보장 정보 중심",
+      closing: "지금 선택해야 하는 이유가 분명한",
+    };
+  }
+  if (title === "프리미엄신뢰형") {
+    return {
+      hero: "고급감과 신뢰가 먼저 느껴지는 절제된 카피",
+      story: "브랜드의 기준, 품질 철학, 세심함을 강조",
+      empathy: "고객의 까다로운 선택 기준을 존중하는 흐름",
+      point: "품질, 소재, 과정, 완성도를 근거 있게 설명",
+      usage: "격식 있는 사용 장면과 선물 가치를 함께 제안",
+      trust: "인증, 제조 과정, 검수 기준을 차분하게 축적",
+      closing: "품질에 대한 확신을 남기는",
+    };
+  }
+  if (title === "클린정보형") {
+    return {
+      hero: "제품 정보가 한눈에 읽히는 명료한 카피",
+      story: "불필요한 수식보다 핵심 정보와 개발 배경을 정리",
+      empathy: "구매 전 궁금증을 순서대로 해소하는 흐름",
+      point: "기능, 구성, 사용법을 표와 짧은 문장으로 정돈",
+      usage: "상황별 사용법을 단계별로 제안",
+      trust: "확인해야 할 정보를 빠짐없이 보여주는 구조",
+      closing: "정보 확인 후 자연스럽게 선택하게 하는",
+    };
+  }
+  if (title === "리뷰공감형") {
+    return {
+      hero: "실제 고객 반응처럼 공감되는 생활형 카피",
+      story: "고객의 불편과 만족 경험을 중심으로 전개",
+      empathy: "후기에서 나올 법한 고민과 감정을 먼저 짚는 흐름",
+      point: "사용 후 달라지는 만족 포인트로 설명",
+      usage: "일상 속 사용 장면과 재구매 이유를 제안",
+      trust: "리뷰 키워드와 객관 근거를 함께 배치",
+      closing: "나도 써보고 싶게 만드는",
+    };
+  }
+  if (title === "무드스토리형") {
+    return {
+      hero: "브랜드 분위기와 사용 장면이 그려지는 감성 카피",
+      story: "제품이 놓이는 순간과 브랜드 감도를 중심으로 전개",
+      empathy: "고객의 취향, 루틴, 기분에 맞춰 공감시키는 흐름",
+      point: "기능을 감각적인 경험 언어로 풀어내는 방식",
+      usage: "하루의 장면이나 루틴 안에서 자연스럽게 제안",
+      trust: "부드러운 문장 속에 필요한 근거를 섞는 구조",
+      closing: "소장하고 싶은 분위기를 남기는",
+    };
+  }
+  if (title === "캠페인형") {
+    return {
+      hero: "짧고 선명한 훅으로 시선을 잡는 카피",
+      story: "브랜드 메시지를 캠페인 문장처럼 강하게 제시",
+      empathy: "고객의 상황을 리듬감 있게 건드리는 흐름",
+      point: "한 줄 헤드라인과 강한 키워드로 반복 각인",
+      usage: "SNS에 남기기 좋은 장면 중심으로 제안",
+      trust: "핵심 근거를 짧은 카드로 빠르게 전달",
+      closing: "기억에 남는 한 문장으로 끝나는",
+    };
+  }
+  if (title === "실사용설득형") {
+    return {
+      hero: "사용 장면이 바로 떠오르는 현실적인 카피",
+      story: "제품을 쓰는 순간의 편리함과 변화를 중심으로 전개",
+      empathy: "실제 사용 전후의 차이를 보여주는 흐름",
+      point: "활용법, 구성, 반복 사용 이유를 구체적으로 설명",
+      usage: "상황별 사용법과 팁을 풍부하게 제안",
+      trust: "실사용 기준의 체크 포인트로 정리",
+      closing: "생활 속 필요성을 다시 확인시키는",
+    };
+  }
+  return {
+    hero: "핵심 가치가 쉽게 이해되는 균형 잡힌 카피",
+    story: "브랜드와 제품의 핵심을 안정적으로 정리",
+    empathy: "고객 고민과 해결책을 자연스럽게 연결하는 흐름",
+    point: "장점과 근거를 읽기 쉽게 정리",
+    usage: "대표 사용 장면을 중심으로 제안",
+    trust: "필요한 신뢰 정보를 차분하게 배치",
+    closing: "구매 이유를 다시 정리하는",
+  };
+}
+
 function resultSectionsFor(data) {
   const plan = productPlanningData(data);
   const productName = plan.productName;
@@ -478,31 +569,32 @@ function resultSectionsFor(data) {
   const strengthPoints = pointList(plan.strengthTags, ["차별화 포인트", "사용 편의성", "구성 만족도", "신뢰 근거", "구매 혜택"]);
   const referenceUrls = referenceUrlList(data);
   const priceGuide = optionSummary(data.options);
+  const toneGuide = styleManuscriptGuide(plan.styleProfile);
 
   return [
     {
       title: "브랜드 스토리",
-      copy: `${brandName}가 ${productName}을 만들게 된 이유와 고객에게 전하고 싶은 가치를 짧은 스토리로 정리합니다. 제품 소개보다 먼저 브랜드의 태도와 약속이 느껴지게 구성합니다.`,
+      copy: `${brandName}가 ${productName}을 만들게 된 이유와 고객에게 전하고 싶은 가치를 ${toneGuide.story} 방식으로 정리합니다. 제품 소개보다 먼저 브랜드의 태도와 약속이 느껴지게 구성합니다.`,
     },
     {
       title: "고객 공감과 해결",
-      copy: `${target}이 구매 전에 느끼는 고민을 먼저 짚고, ${productName}이 그 불편함을 어떻게 해결하는지 문제-해결 흐름으로 풀어냅니다.`,
+      copy: `${target}이 구매 전에 느끼는 고민을 먼저 짚고, ${productName}이 그 불편함을 어떻게 해결하는지 ${toneGuide.empathy}으로 풀어냅니다.`,
     },
     {
       title: "핵심 특장점 5",
-      copy: strengthPoints.map((item, index) => `${index + 1}. ${item}: ${productName} 선택 이유로 보이도록 짧은 제목과 근거 문장으로 구성`).join("\n"),
+      copy: strengthPoints.map((item, index) => `${index + 1}. ${item}: ${toneGuide.point}하여 ${productName}의 선택 이유로 구성`).join("\n"),
     },
     {
       title: "활용 및 레시피",
-      copy: `${plan.categoryProfile.visual}을 바탕으로 사용 장면, 활용 방법, 추천 루틴을 구성합니다. 식품은 레시피와 섭취 장면, 생활/뷰티 제품은 사용 순서와 상황별 활용법으로 풀어냅니다.`,
+      copy: `${plan.categoryProfile.visual}을 바탕으로 ${toneGuide.usage}합니다. 식품은 레시피와 섭취 장면, 생활/뷰티 제품은 사용 순서와 상황별 활용법으로 풀어냅니다.`,
     },
     {
       title: "신뢰와 인증",
-      copy: shortText(data.productionTrust, `${plan.categoryProfile.proof} 내용을 근거 카드, 인증/검수 자료, 제조 과정 안내로 정리합니다.`),
+      copy: shortText(data.productionTrust, `${plan.categoryProfile.proof} 내용을 ${toneGuide.trust}로 정리합니다.`),
     },
     {
       title: "구매 포인트와 리뷰 가이드",
-      copy: `구매 포인트: ${shortText(data.purchaseBenefit, "구성, 혜택, 사용 편의성, 선물성, 가격 만족도를 CTA 앞에 배치합니다.")}\n리뷰 가이드: ${shortText(data.reviewKeywords, "만족감, 재구매 이유, 사용감, 배송 만족도, 선물 반응을 리뷰 키워드로 수집합니다.")}`,
+      copy: `구매 포인트: ${shortText(data.purchaseBenefit, "구성, 혜택, 사용 편의성, 선물성, 가격 만족도를 CTA 앞에 배치합니다.")}\n리뷰 가이드: ${shortText(data.reviewKeywords, "만족감, 재구매 이유, 사용감, 배송 만족도, 선물 반응을 리뷰 키워드로 수집합니다.")}\n마감 톤: ${toneGuide.closing} 흐름으로 정리합니다.`,
     },
     {
       title: "가격표",
