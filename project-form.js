@@ -37,7 +37,7 @@ function checkedValues(group) {
 }
 
 function selectedStyleTone() {
-  return document.querySelector('input[name="styleTone"]:checked')?.value || "정보형 (스펙)";
+  return document.querySelector('input[name="styleTone"]:checked')?.value || "하오 핵심정리형";
 }
 
 function optionRows() {
@@ -319,45 +319,59 @@ function categoryPlanningProfile(category = "") {
 
 function stylePlanningProfile(styleTone = "") {
   const value = String(styleTone);
-  if (value.includes("세일즈") || value.includes("강조")) {
+  if (value.includes("구매전환") || value.includes("세일즈") || value.includes("강조")) {
     return {
-      title: "전환 집중형",
-      copy: "첫 화면부터 구매 이유와 혜택을 빠르게 보여주고, 중반 이후 신뢰 근거로 망설임을 줄입니다.",
+      title: "하오 구매전환형",
+      copy: "첫 화면부터 선택 이유와 혜택을 빠르게 보여주고, 중반 이후 신뢰 근거로 망설임을 줄입니다.",
       sectionPrefix: "구매를 이끄는",
     };
   }
-  if (value.includes("프리미엄")) {
+  if (value.includes("프리미엄") || value.includes("신뢰")) {
     return {
-      title: "프리미엄 브랜드형",
-      copy: "여백, 고급 이미지, 차분한 문장으로 제품 가치를 먼저 설득하고 정보는 정돈된 카드로 보완합니다.",
-      sectionPrefix: "브랜드 가치를 높이는",
+      title: "하오 프리미엄신뢰형",
+      copy: "고급스러운 첫인상과 신뢰 근거를 함께 보여주어 제품 가치를 안정적으로 설득합니다.",
+      sectionPrefix: "신뢰를 높이는",
     };
   }
-  if (value.includes("미니멀")) {
+  if (value.includes("클린정보") || value.includes("미니멀")) {
     return {
-      title: "미니멀 정보형",
-      copy: "불필요한 장식을 줄이고 제품 정보, 사용 방법, 구매 판단 요소를 깔끔하게 정리합니다.",
+      title: "하오 클린정보형",
+      copy: "복잡한 제품 정보, 사용 방법, 구매 판단 요소를 표와 카드 중심으로 깔끔하게 정리합니다.",
       sectionPrefix: "정돈된",
     };
   }
-  if (value.includes("내추럴") || value.includes("감성")) {
+  if (value.includes("리뷰공감")) {
     return {
-      title: "감성 스토리형",
-      copy: "제품을 사용하는 장면과 감정을 중심으로 자연스럽게 공감과 구매 욕구를 만듭니다.",
+      title: "하오 리뷰공감형",
+      copy: "고객 고민과 후기 키워드를 설득 흐름에 섞어 실제 구매자가 공감할 수 있는 상세페이지로 구성합니다.",
       sectionPrefix: "공감을 만드는",
     };
   }
-  if (value.includes("트렌디") || value.includes("키치")) {
+  if (value.includes("무드스토리") || value.includes("내추럴") || value.includes("감성")) {
     return {
-      title: "트렌디 캠페인형",
+      title: "하오 무드스토리형",
+      copy: "브랜드 분위기와 사용 장면을 중심으로 자연스럽게 공감과 구매 욕구를 만듭니다.",
+      sectionPrefix: "무드를 만드는",
+    };
+  }
+  if (value.includes("캠페인") || value.includes("트렌디") || value.includes("키치")) {
+    return {
+      title: "하오 캠페인형",
       copy: "짧고 강한 카피, 리듬감 있는 섹션, 시각적인 포인트로 제품 인상을 빠르게 남깁니다.",
       sectionPrefix: "시선을 잡는",
     };
   }
+  if (value.includes("실사용")) {
+    return {
+      title: "하오 실사용설득형",
+      copy: "사용 장면, 구성, 방법을 실제 구매 흐름으로 연결해 고객이 제품을 쓰는 모습을 쉽게 상상하게 만듭니다.",
+      sectionPrefix: "사용을 상상하게 하는",
+    };
+  }
   return {
-    title: "정보 설득형",
-    copy: "제품의 기능, 차별점, 신뢰 정보를 순서대로 보여주어 구매 판단을 돕습니다.",
-    sectionPrefix: "이해를 돕는",
+    title: "하오 핵심정리형",
+    copy: "고객이 입력한 정보를 그대로 나열하지 않고, 구매자가 이해하기 쉬운 순서와 문장으로 다시 정리합니다.",
+    sectionPrefix: "핵심을 잡아주는",
   };
 }
 

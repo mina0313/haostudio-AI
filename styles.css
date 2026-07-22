@@ -16475,13 +16475,14 @@ fieldset input,
 .wizard-page .style-choice {
   position: relative;
   display: grid !important;
+  align-content: start;
   min-height: 128px;
   margin: 0 !important;
-  border: 1px solid #d8d8d8;
-  border-radius: 5px;
+  border: 1px solid #e7ddd3;
+  border-radius: 8px;
   padding: 20px;
   cursor: pointer;
-  background: #fff;
+  background: linear-gradient(135deg, #fffaf3, #fff);
   transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -16493,14 +16494,23 @@ fieldset input,
 }
 
 .wizard-page .style-choice span {
-  font-size: 22px;
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  background: #16120f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
   line-height: 1;
+  letter-spacing: 0;
 }
 
 .wizard-page .style-choice strong {
-  margin-top: 16px;
+  margin-top: 18px;
   color: #050505;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 950;
 }
 
@@ -16516,8 +16526,12 @@ fieldset input,
 .wizard-page .style-choice:has(input:checked) {
   border: 2px solid #d10f32;
   padding: 19px;
-  background: #fff5f7;
-  box-shadow: 0 12px 24px rgba(209, 15, 50, 0.06);
+  background: linear-gradient(135deg, #fff1f4, #fffaf3);
+  box-shadow: 0 14px 30px rgba(209, 15, 50, 0.08);
+}
+
+.wizard-page .style-choice:has(input:checked) span {
+  background: #d10f32;
 }
 
 .wizard-page .highlight-box {
