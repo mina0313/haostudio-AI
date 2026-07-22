@@ -17025,6 +17025,42 @@ fieldset input,
   font-weight: 950;
 }
 
+.wizard-page .result-developed-copy,
+.wizard-page .result-visual-guide {
+  display: grid;
+  gap: 12px;
+}
+
+.wizard-page .result-developed-copy article,
+.wizard-page .result-visual-guide article {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.wizard-page .result-developed-copy b,
+.wizard-page .result-visual-guide strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #d10f32;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.wizard-page .result-visual-guide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wizard-page .result-visual-guide small {
+  display: block;
+  margin-top: 10px;
+  color: #777;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.5;
+}
+
 .wizard-page .result-section-list {
   display: grid;
   gap: 12px;
@@ -17134,6 +17170,7 @@ fieldset input,
   }
 
   .wizard-page .result-point-grid,
+  .wizard-page .result-visual-guide,
   .wizard-page .result-actions {
     grid-template-columns: 1fr;
   }

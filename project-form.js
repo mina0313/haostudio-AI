@@ -361,6 +361,67 @@ function productPlanningData(data) {
   };
 }
 
+function developedCopyPlan(data) {
+  const plan = productPlanningData(data);
+  const productName = plan.productName;
+  const target = plan.target;
+  const strength = plan.strength;
+  const trust = shortText(data.productionTrust, plan.categoryProfile.proof);
+  const benefit = shortText(data.purchaseBenefit, "구매 전 망설임을 줄이는 구성과 혜택");
+  const review = shortText(data.reviewKeywords, "편안함, 만족감, 재구매 의향");
+  return [
+    {
+      label: "첫 화면 문구",
+      copy: `${target}에게 ${productName}을 선택해야 하는 이유를 첫 화면에서 바로 보여줍니다. ${shortText(data.heroSentence, `${productName}의 핵심 가치를 가장 먼저 각인시키는 문장`)}을 메인 카피로 다듬어 구매 기대감을 만듭니다.`,
+    },
+    {
+      label: "구매 설득 문구",
+      copy: `${strength} 이 강점을 단순 설명이 아니라 “왜 지금 필요한지”로 풀어내고, 제품의 차별점을 고객의 고민 해결 문장으로 연결합니다.`,
+    },
+    {
+      label: "신뢰 보강 문구",
+      copy: `${trust} 이 내용은 상세페이지 중반 이후 신뢰 카드와 근거 섹션으로 정리해, 고객이 구매 전에 확인하고 싶은 불안 요소를 줄이는 방향으로 사용합니다.`,
+    },
+    {
+      label: "전환 마감 문구",
+      copy: `${benefit}을 마지막 CTA 앞에 배치하고, 리뷰 키워드 “${review}”를 자연스럽게 섞어 선택을 밀어주는 마감 문구로 구성합니다.`,
+    },
+  ];
+}
+
+function visualGuideItems(data) {
+  const plan = productPlanningData(data);
+  const productName = plan.productName;
+  const styleTitle = plan.styleProfile.title;
+  const visualBase = plan.categoryProfile.visual;
+  const productFiles = Array.isArray(data.productImages) ? data.productImages : [];
+  const referenceFiles = Array.isArray(data.referenceFiles) ? data.referenceFiles : [];
+  return [
+    {
+      title: "대표 비주얼",
+      copy: `${productName}의 형태와 패키지가 한눈에 보이는 정면 컷을 크게 사용합니다. ${styleTitle} 분위기에 맞춰 여백, 빛, 배경 톤을 정리합니다.`,
+      note: productFiles.length ? `고객 제공 이미지 ${productFiles.length}개 활용` : "제품 사진이 없으면 대표컷 촬영 또는 합성 필요",
+    },
+    {
+      title: "상세 연출 컷",
+      copy: `${visualBase}을 중심으로 사용 장면, 구성품, 디테일 컷을 나눠 배치합니다. 고객이 제품을 실제로 쓰는 상황을 상상할 수 있게 만드는 구간입니다.`,
+      note: "섹션별로 이미지 역할을 나눠 반복 노출",
+    },
+    {
+      title: "정보 디자인",
+      copy: `강점 태그와 옵션 정보를 카드, 배지, 비교표로 정리합니다. 긴 문장은 줄이고 숫자, 구성, 특징이 먼저 보이게 만듭니다.`,
+      note: "모바일에서도 읽히는 짧은 정보 블록",
+    },
+    {
+      title: "참고자료 활용",
+      copy: referenceFiles.length
+        ? `참고 자료 ${referenceFiles.length}개는 톤, 섹션 흐름, 신뢰 근거 배치 기준으로 분석해 새 상세페이지에 맞게 재구성합니다.`
+        : "참고 자료가 없으면 카테고리 표준 흐름 기준으로 섹션을 설계합니다.",
+      note: "그대로 복사하지 않고 구조와 설득 흐름만 참고",
+    },
+  ];
+}
+
 function resultSectionsFor(data) {
   const plan = productPlanningData(data);
   const tags = plan.strengthTags.length ? plan.strengthTags.join(", ") : plan.categoryProfile.motive;
@@ -398,6 +459,19 @@ function renderResultPlan(data) {
   $("#resultBenefit").textContent = shortText(data.purchaseBenefit, "구매 혜택이 없다면 구성/가격/사용 편의성을 CTA 근거로 사용합니다.");
   $("#resultReview").textContent = shortText(data.reviewKeywords, "실제 리뷰에서는 만족 포인트, 재구매 이유, 사용감 표현을 우선 수집합니다.");
   $("#resultOptions").textContent = plan.optionLine;
+  $("#resultDevelopedCopy").innerHTML = developedCopyPlan(data).map((item) => `
+    <article>
+      <b>${escapeHtml(item.label)}</b>
+      <p>${escapeHtml(item.copy)}</p>
+    </article>
+  `).join("");
+  $("#resultVisualGuide").innerHTML = visualGuideItems(data).map((item) => `
+    <article>
+      <strong>${escapeHtml(item.title)}</strong>
+      <p>${escapeHtml(item.copy)}</p>
+      <small>${escapeHtml(item.note)}</small>
+    </article>
+  `).join("");
   $("#resultSections").innerHTML = resultSectionsFor(data).map((section, index) => `
     <li>
       <span>${String(index + 1).padStart(2, "0")}</span>
