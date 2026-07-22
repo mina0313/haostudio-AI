@@ -93,6 +93,20 @@ function collectProjectForm() {
   return data;
 }
 
+function updateFileStatus(field) {
+  const status = document.querySelector(`[data-file-status="${field.dataset.fileGroup}"]`);
+  if (!status) return;
+  const files = Array.from(field.files || []);
+  if (!files.length) {
+    status.textContent = field.dataset.fileGroup === "productImages" ? "여러 장 선택 가능" : "여러 개 선택 가능";
+    return;
+  }
+  const names = files.map((file) => file.name);
+  const visibleNames = names.slice(0, 2).join(", ");
+  const extraCount = names.length > 2 ? ` 외 ${names.length - 2}개` : "";
+  status.textContent = `${names.length}개 선택됨 · ${visibleNames}${extraCount}`;
+}
+
 function readProjectList() {
   try {
     return JSON.parse(localStorage.getItem(CUSTOMER_PROJECT_LIST_KEY) || "[]");
@@ -474,5 +488,9 @@ $("#prevStep")?.addEventListener("click", goPrev);
 $("#addOption")?.addEventListener("click", addOptionRow);
 $("#optionBuilder")?.addEventListener("click", handleOptionRemove);
 $("#projectWizard")?.addEventListener("submit", saveProjectForm);
+$$("[data-file-group]").forEach((field) => {
+  updateFileStatus(field);
+  field.addEventListener("change", () => updateFileStatus(field));
+});
 
 updateProgress();

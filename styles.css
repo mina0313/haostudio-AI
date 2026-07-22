@@ -16715,9 +16715,12 @@ fieldset input,
 
 .wizard-page .compact-upload .upload {
   display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
   align-items: center;
   justify-content: center;
   min-height: 80px;
+  width: 190px;
   margin: 0 !important;
   border: 1px dashed #e0c89c;
   border-radius: 8px;
@@ -16730,6 +16733,17 @@ fieldset input,
 
 .wizard-page .compact-upload .upload input {
   display: none;
+}
+
+.wizard-page .upload-hint {
+  display: block;
+  max-width: 150px;
+  color: #8a7a60;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .wizard-page .hidden-field-flags {
