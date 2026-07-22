@@ -17201,16 +17201,16 @@ fieldset input,
   align-items: center;
   justify-content: center;
   min-height: 62px;
-  border-radius: 8px;
-  background: #f0f0f0;
-  color: #050505;
+  border-radius: 12px;
+  background: #efe8df;
+  color: #171412;
   font-size: 15px;
   font-weight: 950;
   text-decoration: none;
 }
 
 .wizard-page .result-actions a:last-child {
-  background: #d10f32;
+  background: #a9162f;
   color: #fff;
 }
 

@@ -85,7 +85,7 @@ function collectProjectForm() {
     data.purchaseBenefit,
     data.reviewKeywords,
   ].filter(Boolean).join("\n\n");
-  data.references = data.seoKeyword || "";
+  data.references = [data.seoKeyword, data.referenceUrls].filter(Boolean).join("\n");
   data.imageMemo = data.styleTone;
   data.source = "AI 상세페이지 5단계 원고 생성폼";
   data.customerInputVersion = "wizard-intake-v1";
@@ -431,6 +431,8 @@ function visualGuideItems(data) {
   const visualBase = plan.categoryProfile.visual;
   const productFiles = Array.isArray(data.productImages) ? data.productImages : [];
   const referenceFiles = Array.isArray(data.referenceFiles) ? data.referenceFiles : [];
+  const referenceUrls = referenceUrlList(data);
+  const referenceCount = referenceFiles.length + referenceUrls.length;
   return [
     {
       title: "대표 비주얼",
@@ -449,31 +451,72 @@ function visualGuideItems(data) {
     },
     {
       title: "참고자료 활용",
-      copy: referenceFiles.length
-        ? `참고 자료 ${referenceFiles.length}개는 톤, 섹션 흐름, 신뢰 근거 배치 기준으로 분석해 새 상세페이지에 맞게 재구성합니다.`
+      copy: referenceCount
+        ? `첨부 자료와 타사 레퍼런스 ${referenceCount}개는 톤, 섹션 흐름, 신뢰 근거 배치 기준으로 분석해 새 상세페이지에 맞게 재구성합니다.`
         : "참고 자료가 없으면 카테고리 표준 흐름 기준으로 섹션을 설계합니다.",
       note: "그대로 복사하지 않고 구조와 설득 흐름만 참고",
     },
   ];
 }
 
+function referenceUrlList(data) {
+  return String(data.referenceUrls || "")
+    .split(/\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function pointList(items = [], fallback = []) {
+  return (items.length ? items : fallback).slice(0, 5);
+}
+
 function resultSectionsFor(data) {
   const plan = productPlanningData(data);
-  const tags = plan.strengthTags.length ? plan.strengthTags.join(", ") : plan.categoryProfile.motive;
-  return plan.categoryProfile.sections.map((title, index) => {
-    const copies = [
-      `${plan.productName}의 첫인상을 ${plan.styleProfile.title} 톤으로 잡고, "${plan.hero}" 메시지를 가장 먼저 보여줍니다.`,
-      `${plan.target}이 구매 전에 느끼는 고민을 구체화하고, 제품이 필요한 상황을 설명합니다.`,
-      `${plan.strength} 선택한 강점(${tags})이 페이지 중반의 설득 근거가 됩니다.`,
-      `${plan.categoryProfile.visual}을 활용해 사용 장면과 상세 정보를 한눈에 이해시키는 구간입니다.`,
-      `${shortText(data.productionTrust, plan.categoryProfile.proof)} 내용을 바탕으로 신뢰 정보를 정리합니다.`,
-      `${plan.optionLine} ${shortText(data.purchaseBenefit, "구매 혜택")}과 ${shortText(data.reviewKeywords, "리뷰 키워드")}를 마지막 전환 구간에 배치합니다.`,
-    ];
-    return {
-      title: `${plan.styleProfile.sectionPrefix} ${title}`,
-      copy: copies[index] || `${plan.productName}의 구매 이유를 제품 특성에 맞게 정리합니다.`,
-    };
-  });
+  const productName = plan.productName;
+  const brandName = shortText(data.clientName || data.companyName, "브랜드");
+  const target = plan.target;
+  const strengthPoints = pointList(plan.strengthTags, ["차별화 포인트", "사용 편의성", "구성 만족도", "신뢰 근거", "구매 혜택"]);
+  const referenceUrls = referenceUrlList(data);
+  const priceGuide = optionSummary(data.options);
+
+  return [
+    {
+      title: "브랜드 스토리",
+      copy: `${brandName}가 ${productName}을 만들게 된 이유와 고객에게 전하고 싶은 가치를 짧은 스토리로 정리합니다. 제품 소개보다 먼저 브랜드의 태도와 약속이 느껴지게 구성합니다.`,
+    },
+    {
+      title: "고객 공감과 해결",
+      copy: `${target}이 구매 전에 느끼는 고민을 먼저 짚고, ${productName}이 그 불편함을 어떻게 해결하는지 문제-해결 흐름으로 풀어냅니다.`,
+    },
+    {
+      title: "핵심 특장점 5",
+      copy: strengthPoints.map((item, index) => `${index + 1}. ${item}: ${productName} 선택 이유로 보이도록 짧은 제목과 근거 문장으로 구성`).join("\n"),
+    },
+    {
+      title: "활용 및 레시피",
+      copy: `${plan.categoryProfile.visual}을 바탕으로 사용 장면, 활용 방법, 추천 루틴을 구성합니다. 식품은 레시피와 섭취 장면, 생활/뷰티 제품은 사용 순서와 상황별 활용법으로 풀어냅니다.`,
+    },
+    {
+      title: "신뢰와 인증",
+      copy: shortText(data.productionTrust, `${plan.categoryProfile.proof} 내용을 근거 카드, 인증/검수 자료, 제조 과정 안내로 정리합니다.`),
+    },
+    {
+      title: "구매 포인트와 리뷰 가이드",
+      copy: `구매 포인트: ${shortText(data.purchaseBenefit, "구성, 혜택, 사용 편의성, 선물성, 가격 만족도를 CTA 앞에 배치합니다.")}\n리뷰 가이드: ${shortText(data.reviewKeywords, "만족감, 재구매 이유, 사용감, 배송 만족도, 선물 반응을 리뷰 키워드로 수집합니다.")}`,
+    },
+    {
+      title: "가격표",
+      copy: priceGuide,
+    },
+    {
+      title: "배송 및 보관 안내",
+      copy: `${productName}의 배송 방식, 포장 상태, 보관 방법, 사용 전 확인 사항을 하단 정보 영역에 정리합니다. 고객 문의가 줄어들도록 짧은 표와 주의 문구로 구성합니다.`,
+    },
+    {
+      title: "FAQ",
+      copy: `Q1. 어떤 고객에게 추천하나요?\n${target}에게 추천합니다.\n\nQ2. 구성과 가격은 어떻게 되나요?\n${priceGuide}\n\nQ3. 참고한 레퍼런스가 있나요?\n${referenceUrls.length ? referenceUrls.join("\n") : "입력된 타사 레퍼런스 URL이 있으면 톤과 흐름만 참고합니다."}`,
+    },
+  ];
 }
 
 function optionSummary(options = []) {
