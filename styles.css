@@ -17167,6 +17167,67 @@ fieldset input,
   font-weight: 950;
 }
 
+.wizard-page .result-section-list p {
+  white-space: pre-line;
+}
+
+.wizard-page .result-keypoint-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.wizard-page .result-keypoint {
+  position: relative;
+  border: 1px solid #eadbd0;
+  border-radius: 10px;
+  padding: 28px 20px 18px;
+  background: #fff;
+}
+
+.wizard-page .result-keypoint em {
+  position: absolute;
+  top: -13px;
+  left: 18px;
+  min-width: 110px;
+  border-radius: 999px;
+  padding: 7px 16px;
+  background: #a9162f;
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+  text-align: center;
+}
+
+.wizard-page .result-keypoint strong {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.wizard-page .result-keypoint div {
+  display: grid;
+  gap: 4px;
+  margin-top: 16px;
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #f7f3ef;
+}
+
+.wizard-page .result-keypoint b {
+  color: #a9162f;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.wizard-page .result-keypoint small {
+  color: #332d29;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.65;
+}
+
 .wizard-page .result-point-grid {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr));

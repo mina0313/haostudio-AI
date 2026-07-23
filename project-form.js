@@ -471,6 +471,71 @@ function pointList(items = [], fallback = []) {
   return (items.length ? items : fallback).slice(0, 5);
 }
 
+function categoryUseNoun(category = "") {
+  const value = String(category);
+  if (value.includes("식품") || value.includes("푸드")) return "먹는 순간";
+  if (value.includes("뷰티") || value.includes("화장")) return "바르는 순간";
+  if (value.includes("패션") || value.includes("의류")) return "착용하는 순간";
+  if (value.includes("생활") || value.includes("홈")) return "사용하는 순간";
+  if (value.includes("디지털") || value.includes("가전")) return "켜는 순간";
+  if (value.includes("서비스") || value.includes("교육")) return "경험하는 순간";
+  return "사용하는 순간";
+}
+
+function pointCopyFor(item, index, data, plan, toneGuide) {
+  const productName = plan.productName;
+  const target = plan.target;
+  const useNoun = categoryUseNoun(data.category);
+  const trust = shortText(data.productionTrust, plan.categoryProfile.proof);
+  const normalized = String(item);
+  const titleTemplates = {
+    "가격/가성비": [`부담은 낮추고 만족은 높인 ${productName}`, `가격 대비 체감 가치가 분명한 구성`],
+    "원재료/성분": [`좋은 기준으로 고른 핵심 원료와 성분`, `${target}을 위해 엄선한 성분 설계`],
+    "기능/효과": [`필요한 순간 바로 느끼는 핵심 기능`, `${productName}의 차이를 만드는 기능 포인트`],
+    "안전성/인증": [`안심하고 선택할 수 있는 검증 기준`, `믿고 사용할 수 있도록 준비한 신뢰 근거`],
+    "후기/리뷰": [`먼저 경험한 고객이 말하는 만족 포인트`, `리뷰로 확인되는 ${productName}의 장점`],
+    "선물용": [`받는 사람까지 생각한 선물 구성`, `마음을 전하기 좋은 완성도 있는 패키지`],
+    "사용방법": [`처음 써도 쉬운 간편한 사용 흐름`, `${useNoun} 바로 이해되는 쉬운 사용법`],
+    "브랜드 스토리": [`브랜드의 기준이 담긴 ${productName}`, `제품 너머의 이야기를 전하는 브랜드 무드`],
+    "A/S/고객지원": [`구매 후까지 이어지는 든든한 케어`, `문의와 관리까지 생각한 고객 지원`],
+  };
+  const titles = titleTemplates[normalized] || [`${productName}을 선택하게 만드는 ${normalized}`, `${target}에게 필요한 ${normalized}`];
+  const title = titles[index % titles.length];
+
+  const bodyTemplates = {
+    "가격/가성비": `${productName}은 필요한 구성과 체감 만족도를 균형 있게 담아, 처음 구매하는 고객도 부담 없이 선택할 수 있게 설계합니다.`,
+    "원재료/성분": `${productName}의 핵심 원료와 성분을 고객이 이해하기 쉬운 언어로 풀어, 왜 이 구성이 필요한지 자연스럽게 설득합니다.`,
+    "기능/효과": `${target}이 기대하는 변화를 중심으로 기능을 설명하고, ${useNoun} 느낄 수 있는 차이를 구체적인 장면으로 보여줍니다.`,
+    "안전성/인증": `${trust} 내용을 바탕으로 제조, 검수, 인증 정보를 정리해 구매 전 불안감을 줄이고 신뢰를 높입니다.`,
+    "후기/리뷰": `실제 리뷰에서 나올 법한 만족 이유를 중심으로 ${productName}의 장점을 다시 보여주고, 재구매와 추천 포인트로 연결합니다.`,
+    "선물용": `구성, 패키지, 전달 순간까지 함께 보여주어 ${productName}이 실사용은 물론 선물용으로도 어울린다는 인상을 만듭니다.`,
+    "사용방법": `복잡한 설명보다 순서와 상황을 먼저 보여주어, 고객이 ${productName}을 어떻게 쓰면 좋은지 바로 이해하게 만듭니다.`,
+    "브랜드 스토리": `브랜드가 이 제품을 준비한 이유와 고객에게 전하고 싶은 가치를 담아, 단순 상품 소개를 넘어 기억에 남는 선택 이유를 만듭니다.`,
+    "A/S/고객지원": `구매 이후 문의, 관리, 안내까지 이어지는 흐름을 보여주어 처음 선택하는 고객도 편안하게 구매할 수 있게 합니다.`,
+  };
+  const copy = bodyTemplates[normalized] || `${normalized}을 ${toneGuide.point}하는 방향으로 풀어내어, ${productName}이 ${target}에게 왜 필요한지 자연스럽게 설명합니다.`;
+
+  const visualTemplates = {
+    "가격/가성비": "구성품과 가격 혜택이 한눈에 보이는 비교표나 패키지 전체 컷을 추천합니다.",
+    "원재료/성분": "원료, 성분, 소재를 감각적인 그래픽이나 확대 컷으로 시각화합니다.",
+    "기능/효과": "사용 전후, 기능 흐름, 핵심 효과를 아이콘 카드나 단계 이미지로 보여줍니다.",
+    "안전성/인증": "인증 마크, 테스트 결과, 제조 과정 이미지를 차분한 정보 카드로 정리합니다.",
+    "후기/리뷰": "리뷰 키워드, 별점, 실제 사용 장면을 함께 배치해 공감을 만듭니다.",
+    "선물용": "선물 패키지, 포장 디테일, 전달 장면을 따뜻한 톤으로 연출합니다.",
+    "사용방법": "손동작, 단계별 사용 컷, 체크리스트를 순서대로 배치합니다.",
+    "브랜드 스토리": "브랜드 무드 컷, 제작 과정, 메시지 카드를 함께 구성합니다.",
+    "A/S/고객지원": "상담, 안내, 보증 흐름을 간단한 프로세스 그래픽으로 보여줍니다.",
+  };
+  const visual = visualTemplates[normalized] || `${plan.categoryProfile.visual}을 활용해 ${normalized}이 직관적으로 보이는 장면을 추천합니다.`;
+
+  return {
+    label: `key point${index + 1}`,
+    title,
+    copy,
+    visual,
+  };
+}
+
 function styleManuscriptGuide(styleProfile) {
   const title = styleProfile.title;
   if (title === "구매전환형") {
@@ -570,6 +635,7 @@ function resultSectionsFor(data) {
   const referenceUrls = referenceUrlList(data);
   const priceGuide = optionSummary(data.options);
   const toneGuide = styleManuscriptGuide(plan.styleProfile);
+  const keyPoints = strengthPoints.map((item, index) => pointCopyFor(item, index, data, plan, toneGuide));
 
   return [
     {
@@ -582,7 +648,8 @@ function resultSectionsFor(data) {
     },
     {
       title: "핵심 특장점 5",
-      copy: strengthPoints.map((item, index) => `${index + 1}. ${item}: ${toneGuide.point}하여 ${productName}의 선택 이유로 구성`).join("\n"),
+      copy: "고객이 선택한 강점을 상세페이지용 핵심 카피로 자연스럽게 확장합니다.",
+      points: keyPoints,
     },
     {
       title: "활용 및 레시피",
@@ -616,6 +683,28 @@ function optionSummary(options = []) {
   return options.map((item) => [item.name, item.volume, item.price].filter(Boolean).join(" · ")).join("\n");
 }
 
+function renderSectionDetail(section) {
+  if (Array.isArray(section.points) && section.points.length) {
+    return `
+      <p>${escapeHtml(section.copy)}</p>
+      <div class="result-keypoint-list">
+        ${section.points.map((point) => `
+          <article class="result-keypoint">
+            <em>${escapeHtml(point.label)}</em>
+            <strong>${escapeHtml(point.title)}</strong>
+            <p>${escapeHtml(point.copy)}</p>
+            <div>
+              <b>추천 비주얼 무드</b>
+              <small>${escapeHtml(point.visual)}</small>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    `;
+  }
+  return `<p>${escapeHtml(section.copy)}</p>`;
+}
+
 function renderResultPlan(data) {
   const plan = productPlanningData(data);
   $("#resultProductName").textContent = plan.productName;
@@ -647,7 +736,7 @@ function renderResultPlan(data) {
       <span>${String(index + 1).padStart(2, "0")}</span>
       <div>
         <strong>${escapeHtml(section.title)}</strong>
-        <p>${escapeHtml(section.copy)}</p>
+        ${renderSectionDetail(section)}
       </div>
     </li>
   `).join("");
