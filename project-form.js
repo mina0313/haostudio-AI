@@ -536,6 +536,37 @@ function pointCopyFor(item, index, data, plan, toneGuide) {
   };
 }
 
+function usageProposal(data, plan, toneGuide) {
+  const productName = plan.productName;
+  const value = String(data.category);
+  if (value.includes("뷰티") || value.includes("화장")) {
+    return `STEP 1. 사용 전 피부 상태를 정돈합니다.\nSTEP 2. ${productName}을 적당량 덜어 고민 부위에 부드럽게 펴 바릅니다.\nSTEP 3. ${toneGuide.usage}하는 장면을 전후 컷이나 루틴 이미지로 보여줍니다.`;
+  }
+  if (value.includes("식품") || value.includes("푸드")) {
+    return `STEP 1. ${productName}을 즐기기 좋은 시간과 상황을 제안합니다.\nSTEP 2. 기본 섭취법과 함께 곁들이면 좋은 레시피를 보여줍니다.\nSTEP 3. 보관 방법과 구성 정보를 함께 배치해 구매 전 궁금증을 줄입니다.`;
+  }
+  if (value.includes("패션") || value.includes("의류")) {
+    return `STEP 1. 대표 착용 컷으로 핏과 분위기를 먼저 보여줍니다.\nSTEP 2. 일상, 출근, 외출 등 상황별 스타일링을 제안합니다.\nSTEP 3. 소재감과 관리법을 함께 안내해 구매 후 만족도를 높입니다.`;
+  }
+  if (value.includes("서비스") || value.includes("교육")) {
+    return `STEP 1. 고객이 겪는 문제 상황을 먼저 정리합니다.\nSTEP 2. 진행 과정과 결과물을 단계별로 보여줍니다.\nSTEP 3. 상담, 신청, 이용 흐름을 한눈에 이해할 수 있게 구성합니다.`;
+  }
+  return `STEP 1. ${productName}을 사용하는 대표 상황을 보여줍니다.\nSTEP 2. 사용 방법과 구성품을 순서대로 안내합니다.\nSTEP 3. ${toneGuide.usage}하는 이미지나 짧은 체크리스트로 마무리합니다.`;
+}
+
+function linkedSuggestion(kind, data, plan, toneGuide) {
+  const productName = plan.productName;
+  if (kind === "story") return `${shortText(data.heroSentence, productName)} 문장을 브랜드가 제품을 만든 이유와 연결해 첫 화면 이후의 스토리 카피로 확장합니다.`;
+  if (kind === "empathy") return `${shortText(data.coreStrength, plan.strength)} 내용을 고객 고민 해결 문장으로 바꾸고, 구매자가 “내 얘기다”라고 느끼는 흐름을 만듭니다.`;
+  if (kind === "usage") return usageProposal(data, plan, toneGuide);
+  if (kind === "trust") return `고객이 입력한 제조/인증 내용을 인증서, 공정 이미지, 기관 로고, 체크리스트 형태로 나눠 시각적인 신뢰도로 높입니다.`;
+  if (kind === "purchase") return `혜택은 CTA 직전에 배치하고, 리뷰 키워드는 후기 섹션의 제목과 말풍선 카피로 바꿔 구매 결정을 밀어줍니다.`;
+  if (kind === "price") return `옵션명, 용량, 가격을 표로 정리하고 대표 추천 구성을 따로 강조하면 선택이 쉬워집니다.`;
+  if (kind === "delivery") return `배송, 포장, 보관, 사용 전 주의사항을 아이콘형 안내 카드로 정리해 반복 문의를 줄입니다.`;
+  if (kind === "faq") return `고객 입력값에서 가장 많이 물어볼 내용을 뽑아 추천 대상, 구성/가격, 사용법, 보관법, 인증 여부 순서로 FAQ를 구성합니다.`;
+  return `${productName}에 맞춰 고객 입력 내용을 상세페이지 문장으로 자연스럽게 다듬습니다.`;
+}
+
 function styleManuscriptGuide(styleProfile) {
   const title = styleProfile.title;
   if (title === "구매전환형") {
@@ -641,10 +672,12 @@ function resultSectionsFor(data) {
     {
       title: "브랜드 스토리",
       copy: `${brandName}가 ${productName}을 만들게 된 이유와 고객에게 전하고 싶은 가치를 ${toneGuide.story} 방식으로 정리합니다. 제품 소개보다 먼저 브랜드의 태도와 약속이 느껴지게 구성합니다.`,
+      suggestion: linkedSuggestion("story", data, plan, toneGuide),
     },
     {
       title: "고객 공감과 해결",
-      copy: `${target}이 구매 전에 느끼는 고민을 먼저 짚고, ${productName}이 그 불편함을 어떻게 해결하는지 ${toneGuide.empathy}으로 풀어냅니다.`,
+      copy: `${target}이 구매 전에 느끼는 고민을 먼저 짚습니다.\n${shortText(data.coreStrength, `${productName}이 그 불편함을 어떻게 해결하는지 ${toneGuide.empathy}으로 풀어냅니다.`)}`,
+      suggestion: linkedSuggestion("empathy", data, plan, toneGuide),
     },
     {
       title: "핵심 특장점 5",
@@ -653,27 +686,33 @@ function resultSectionsFor(data) {
     },
     {
       title: "활용 및 레시피",
-      copy: `${plan.categoryProfile.visual}을 바탕으로 ${toneGuide.usage}합니다. 식품은 레시피와 섭취 장면, 생활/뷰티 제품은 사용 순서와 상황별 활용법으로 풀어냅니다.`,
+      copy: usageProposal(data, plan, toneGuide),
+      suggestion: linkedSuggestion("usage", data, plan, toneGuide),
     },
     {
       title: "신뢰와 인증",
       copy: shortText(data.productionTrust, `${plan.categoryProfile.proof} 내용을 ${toneGuide.trust}로 정리합니다.`),
+      suggestion: linkedSuggestion("trust", data, plan, toneGuide),
     },
     {
       title: "구매 포인트와 리뷰 가이드",
       copy: `구매 포인트: ${shortText(data.purchaseBenefit, "구성, 혜택, 사용 편의성, 선물성, 가격 만족도를 CTA 앞에 배치합니다.")}\n리뷰 가이드: ${shortText(data.reviewKeywords, "만족감, 재구매 이유, 사용감, 배송 만족도, 선물 반응을 리뷰 키워드로 수집합니다.")}\n마감 톤: ${toneGuide.closing} 흐름으로 정리합니다.`,
+      suggestion: linkedSuggestion("purchase", data, plan, toneGuide),
     },
     {
       title: "가격표",
       copy: priceGuide,
+      suggestion: linkedSuggestion("price", data, plan, toneGuide),
     },
     {
       title: "배송 및 보관 안내",
       copy: `${productName}의 배송 방식, 포장 상태, 보관 방법, 사용 전 확인 사항을 하단 정보 영역에 정리합니다. 고객 문의가 줄어들도록 짧은 표와 주의 문구로 구성합니다.`,
+      suggestion: linkedSuggestion("delivery", data, plan, toneGuide),
     },
     {
       title: "FAQ",
       copy: `Q1. 어떤 고객에게 추천하나요?\n${target}에게 추천합니다.\n\nQ2. 구성과 가격은 어떻게 되나요?\n${priceGuide}\n\nQ3. 참고한 레퍼런스가 있나요?\n${referenceUrls.length ? referenceUrls.join("\n") : "입력된 타사 레퍼런스 URL이 있으면 톤과 흐름만 참고합니다."}`,
+      suggestion: linkedSuggestion("faq", data, plan, toneGuide),
     },
   ];
 }
@@ -702,7 +741,25 @@ function renderSectionDetail(section) {
       </div>
     `;
   }
-  return `<p>${escapeHtml(section.copy)}</p>`;
+  return `
+    <p>${escapeHtml(section.copy)}</p>
+    ${section.suggestion ? `
+      <aside class="result-linked-suggestion">
+        <b>· 제안</b>
+        <small>${escapeHtml(section.suggestion)}</small>
+      </aside>
+    ` : ""}
+  `;
+}
+
+function renderLinkedPoint(value, fallback, suggestion) {
+  return `
+    <p>${escapeHtml(shortText(value, fallback))}</p>
+    <aside class="result-linked-suggestion">
+      <b>· 제안</b>
+      <small>${escapeHtml(suggestion)}</small>
+    </aside>
+  `;
 }
 
 function renderResultPlan(data) {
@@ -714,10 +771,11 @@ function renderResultPlan(data) {
   $("#resultTone").textContent = `${plan.styleProfile.title} · ${plan.styleProfile.copy}`;
   $("#resultHeadline").textContent = plan.hero;
   $("#resultStrength").textContent = `${plan.strength}\n강조 태그: ${plan.strengthTags.join(", ") || plan.categoryProfile.motive}`;
-  $("#resultTrust").textContent = shortText(data.productionTrust, plan.categoryProfile.proof);
-  $("#resultBenefit").textContent = shortText(data.purchaseBenefit, "구매 혜택이 없다면 구성/가격/사용 편의성을 CTA 근거로 사용합니다.");
-  $("#resultReview").textContent = shortText(data.reviewKeywords, "실제 리뷰에서는 만족 포인트, 재구매 이유, 사용감 표현을 우선 수집합니다.");
-  $("#resultOptions").textContent = plan.optionLine;
+  const toneGuide = styleManuscriptGuide(plan.styleProfile);
+  $("#resultTrust").innerHTML = renderLinkedPoint(data.productionTrust, plan.categoryProfile.proof, linkedSuggestion("trust", data, plan, toneGuide));
+  $("#resultBenefit").innerHTML = renderLinkedPoint(data.purchaseBenefit, "구매 혜택이 없다면 구성/가격/사용 편의성을 CTA 근거로 사용합니다.", linkedSuggestion("purchase", data, plan, toneGuide));
+  $("#resultReview").innerHTML = renderLinkedPoint(data.reviewKeywords, "실제 리뷰에서는 만족 포인트, 재구매 이유, 사용감 표현을 우선 수집합니다.", "고객이 남길 만한 표현을 리뷰 제목, 후기 말풍선, 구매 후 만족 포인트로 나눠 보여줍니다.");
+  $("#resultOptions").innerHTML = renderLinkedPoint(plan.optionLine, "옵션 정보가 정리됩니다.", linkedSuggestion("price", data, plan, toneGuide));
   $("#resultDevelopedCopy").innerHTML = developedCopyPlan(data).map((item) => `
     <article>
       <b>${escapeHtml(item.label)}</b>
