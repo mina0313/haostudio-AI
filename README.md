@@ -1,22 +1,36 @@
 # haostudio-AI
 
-AI 상세페이지 제작 보조 관리자툴 프로토타입입니다.
+고객이 작성한 상품 정보를 바탕으로 내부에서 상세페이지 원고, 기획 방향, A/B 시안, 제작 전달 자료를 정리하는 정적 웹 프로토타입입니다.
 
-## 포함 화면
+## 바로 열기
 
-- `index.html`: 내부 관리자용 프로젝트/기획/A-B 시안 관리 화면
-- `project-form.html`: 고객 상세페이지 제작 접수폼
+- 고객 작성폼: `project-form.html`
+- 내부 관리자툴: `index.html`
 
-## 실행 방법
+GitHub Pages 주소:
 
-정적 HTML/CSS/JS 프로젝트라 별도 빌드 없이 브라우저에서 열 수 있습니다.
+- 고객 작성폼: https://mina0313.github.io/haostudio-AI/project-form.html
+- 내부 관리자툴: https://mina0313.github.io/haostudio-AI/
 
-```bash
-python -m http.server 8765
-```
+## 기본 흐름
 
-그 다음 아래 주소로 확인합니다.
+1. 고객이 `project-form.html`에서 제품 정보, 컨셉, 강점, 신뢰 자료, 옵션, 참고 URL을 작성합니다.
+2. 저장된 고객 작성 내용은 브라우저 안에 보관됩니다.
+3. 내부 담당자가 `index.html`에서 `고객 작성 내용 불러오기`를 누릅니다.
+4. 업체명을 선택하면 고객 입력값이 내부 기획 필드로 자동 연결됩니다.
+5. 내부 툴에서 A/B 시안 생성, 섹션 수정, 고객 발송 문안, 제작 전달 자료를 이어서 정리합니다.
 
-- `http://127.0.0.1:8765/index.html`
-- `http://127.0.0.1:8765/project-form.html`
+## 폴더 구성
 
+- `index.html`: 내부 관리자툴 화면
+- `app.js`: 내부 관리자툴 동작 및 시안 생성 로직
+- `project-form.html`: 고객 작성폼
+- `project-form.js`: 고객 작성폼 저장 및 원고 생성 로직
+- `styles.css`: 전체 화면 스타일
+- `assets/`: 테스트/참고 이미지
+- `PROJECT_GOAL.md`: 프로젝트 개발 목표
+- `SHARE_README.md`: 외부 공유용 짧은 안내
+
+## 전달 시 참고
+
+이 프로젝트는 별도 설치 없이 브라우저에서 열 수 있습니다. 같은 브라우저에서 고객폼을 작성한 뒤 내부 관리자툴을 열어야 작성 내용 불러오기가 됩니다. 다른 컴퓨터에 전달할 때는 폴더 전체를 전달하거나 GitHub Pages 주소를 공유하면 됩니다.

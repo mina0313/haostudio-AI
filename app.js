@@ -765,6 +765,14 @@ function importCustomerProject() {
   const imageStyle = data.imageStyle || [];
   const avoidStyle = data.avoidStyle || [];
   const imageAssets = data.imageAssets || [];
+  const strengthTags = asArray(data.strengthTags);
+  const customerHighlights = strengthHighlightsForCustomer(strengthTags);
+  const customerDirections = styleDirectionsForCustomer(data.styleTone);
+  const customerTargets = asArray(data.targetCustomer);
+  const customerReferences = [
+    data.references || "",
+    data.referenceUrls ? `타사 레퍼런스 URL:\n${data.referenceUrls}` : "",
+  ].filter(Boolean).join("\n\n");
   const uploadedFiles = [
     data.productImages?.length ? `제품 이미지 파일: ${data.productImages.join(", ")}` : "",
     data.brandLogo?.length ? `브랜드 로고 파일: ${data.brandLogo.join(", ")}` : "",
@@ -784,7 +792,14 @@ function importCustomerProject() {
     data.phone ? `연락처: ${data.phone}` : "",
     data.source ? `접수 경로: ${data.source}` : "",
     data.targetCustomer ? `주요 고객: ${data.targetCustomer}` : "",
+    data.styleTone ? `고객 선택 컨셉: ${data.styleTone}` : "",
+    strengthTags.length ? `고객 선택 핵심 강점: ${strengthTags.join(", ")}` : "",
+    data.heroSentence ? `고객 작성 첫 문장:\n${data.heroSentence}` : "",
+    data.coreStrength ? `고객 작성 핵심 경쟁력:\n${data.coreStrength}` : "",
     data.features ? `제품 특징:\n${data.features}` : "",
+    data.productionTrust ? `신뢰/인증 입력:\n${data.productionTrust}` : "",
+    data.purchaseBenefit ? `구매 혜택/이벤트:\n${data.purchaseBenefit}` : "",
+    data.reviewKeywords ? `리뷰 가이드:\n${data.reviewKeywords}` : "",
     data.existingDetailStructure?.length ? `기존 상세페이지 구조 분석:\n${data.existingDetailStructure.map((item, index) => `${index + 1}. ${item}`).join("\n")}` : "",
     imageAssets.length ? `이미지/촬영본 상태: ${imageAssets.join(", ")}` : "",
     uploadedFiles.length ? uploadedFiles.join("\n") : "",
@@ -797,6 +812,7 @@ function importCustomerProject() {
     structure.length ? `선택한 구성 방식: ${structure.join(", ")}` : "",
     colorTone.length ? `선택한 색감 방향: ${colorTone.join(", ")}` : "",
     imageStyle.length ? `선택한 이미지 활용: ${imageStyle.join(", ")}` : "",
+    data.referenceUrls ? `고객이 참고한 타사 URL:\n${data.referenceUrls}` : "",
   ].filter(Boolean).join("\n");
   $("#emphasis").value = data.emphasis || "";
   $("#banWords").value = [
@@ -804,9 +820,12 @@ function importCustomerProject() {
     avoidStyle.length ? `피하고 싶은 느낌: ${avoidStyle.join(", ")}` : "",
   ].filter(Boolean).join("\n");
   $("#mustInclude").value = data.mustInclude || "";
-  $("#references").value = data.references || "";
+  $("#references").value = customerReferences;
+  $("#contentRatio").value = data.contentRatio || customerContentRatio(data);
+  $("#optionMemo").value = data.optionMemo || customerOptionMemo(data);
 
   const directions = [];
+  directions.push(...customerDirections);
   if (mood.some((item) => item.includes("고급스럽고") || item.includes("신뢰감"))) directions.push("프리미엄 브랜드형");
   if (mood.some((item) => item.includes("따뜻") || item.includes("감성"))) directions.push("감성 스토리형");
   if (mood.some((item) => item.includes("귀엽") || item.includes("친근"))) directions.push("캐주얼/귀여운형");
@@ -821,7 +840,16 @@ function importCustomerProject() {
   if (mood.some((item) => item.includes("신뢰감")) || structure.some((item) => item.includes("신뢰"))) goals.push("브랜드 신뢰");
   if (structure.some((item) => item.includes("제품 설명"))) goals.push("제품 이해");
   if (structure.some((item) => item.includes("선물용"))) goals.push("선물 수요");
+  if (strengthTags.some((item) => item.includes("안전") || item.includes("인증"))) goals.push("브랜드 신뢰");
+  if (strengthTags.some((item) => item.includes("후기") || item.includes("가격") || item.includes("선물"))) goals.push("구매 전환");
   setChecked("goal", [...new Set(goals)]);
+
+  ensureCheckboxOptions("target", customerTargets);
+  ensureCheckboxOptions("highlight", customerHighlights);
+  ensureCheckboxOptions("usp", strengthTags);
+  setChecked("target", [...new Set(customerTargets)]);
+  setChecked("highlight", [...new Set(customerHighlights)]);
+  setChecked("usp", [...new Set(strengthTags)]);
 
   updateWorkflowState();
   alert("고객 작성 내용을 불러왔습니다. 부족한 부분만 보완하면 됩니다.");
@@ -1201,6 +1229,82 @@ function setChecked(name, values) {
   $$(`input[name="${name}"]`).forEach((item) => {
     item.checked = values.includes(item.value);
   });
+}
+
+function asArray(value) {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  return String(value || "")
+    .split(/\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function ensureCheckboxOption(name, optionValue) {
+  if (!optionValue) return;
+  if ($$(`input[name="${name}"]`).some((item) => item.value === optionValue)) return;
+  const fieldset = $(`input[name="${name}"]`)?.closest("fieldset");
+  if (!fieldset) return;
+  const label = document.createElement("label");
+  label.innerHTML = `<input type="checkbox" name="${escapeHtml(name)}" value="${escapeHtml(optionValue)}">${escapeHtml(optionValue)}`;
+  fieldset.appendChild(label);
+}
+
+function ensureCheckboxOptions(name, values) {
+  asArray(values).forEach((item) => ensureCheckboxOption(name, item));
+}
+
+function styleDirectionsForCustomer(styleTone = "") {
+  const value = String(styleTone);
+  const directions = [];
+  if (value.includes("프리미엄") || value.includes("신뢰")) directions.push("프리미엄 브랜드형");
+  if (value.includes("정보") || value.includes("미니멀") || value.includes("클린")) directions.push("정보 전달형");
+  if (value.includes("공감") || value.includes("스토리") || value.includes("내추럴") || value.includes("감성")) directions.push("감성 스토리형");
+  if (value.includes("구매") || value.includes("세일즈") || value.includes("강조")) directions.push("문제 해결형");
+  if (value.includes("트렌디") || value.includes("키치") || value.includes("캠페인")) directions.push("캐주얼/귀여운형");
+  return directions;
+}
+
+function strengthHighlightsForCustomer(strengthTags = []) {
+  const map = {
+    "가격/가성비": "가격 경쟁력",
+    "원재료/성분": "원료",
+    "기능/효과": "기능/효과",
+    "안전성/인증": "인증/신뢰",
+    "후기/리뷰": "리뷰",
+    "선물용": "선물성",
+    "사용방법": "사용법",
+    "브랜드 스토리": "브랜드 스토리",
+    "A/S/고객지원": "고객지원",
+  };
+  return asArray(strengthTags).map((item) => map[item] || item);
+}
+
+function customerContentRatio(data) {
+  return [
+    "브랜드 스토리 12%",
+    "고객 공감/해결 13%",
+    "핵심 특장점 25%",
+    "활용 및 레시피 12%",
+    "신뢰/인증 13%",
+    "구매 포인트/리뷰 10%",
+    "가격표/배송/FAQ 15%",
+  ].join("\n");
+}
+
+function customerOptionMemo(data) {
+  const options = Array.isArray(data.options) && data.options.length
+    ? data.options.map((item, index) => `${index + 1}. ${[item.name, item.volume, item.price].filter(Boolean).join(" / ")}`).join("\n")
+    : "";
+  return [
+    data.styleTone ? `선택 컨셉: ${data.styleTone}` : "",
+    data.targetCustomer ? `고객 타깃: ${data.targetCustomer}` : "",
+    data.coreStrength ? `핵심 경쟁력: ${data.coreStrength}` : "",
+    data.productionTrust ? `신뢰/인증 입력:\n${data.productionTrust}` : "",
+    data.purchaseBenefit ? `구매 혜택:\n${data.purchaseBenefit}` : "",
+    data.reviewKeywords ? `리뷰 가이드:\n${data.reviewKeywords}` : "",
+    options ? `가격/옵션:\n${options}` : "",
+    data.referenceUrls ? `타사 레퍼런스 URL:\n${data.referenceUrls}` : "",
+  ].filter(Boolean).join("\n\n");
 }
 
 function product() {
