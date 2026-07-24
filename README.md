@@ -33,6 +33,7 @@ GitHub Pages 주소:
 - `assets/`: 테스트/참고 이미지
 - `PROJECT_GOAL.md`: 프로젝트 개발 목표
 - `SHARE_README.md`: 외부 공유용 짧은 안내
+- `CODEX_HANDOFF_PROMPT.md`: 다른 사람의 Codex에서 이어받기 위한 프롬프트
 
 ## 전달 시 참고
 
