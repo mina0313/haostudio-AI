@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HAO Studio 인수인계 안내</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f3ef;
+      color: #171412;
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      line-height: 1.7;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 22px 72px;
+    }
+
+    .hero {
+      border: 1px solid #eadbd0;
+      border-radius: 18px;
+      padding: 34px;
+      background: #fffdf9;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.25;
+    }
+
+    h2 {
+      margin: 34px 0 14px;
+      font-size: 22px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    a.button {
+      display: flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #171412;
+      color: #fff;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    a.button.secondary {
+      background: #a9162f;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .card {
+      border: 1px solid #eadbd0;
+      border-radius: 14px;
+      padding: 20px;
+      background: #fffdf9;
+    }
+
+    .card b {
+      display: block;
+      margin-bottom: 8px;
+      color: #a9162f;
+      font-size: 14px;
+    }
+
+    ol, ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 7px;
+    }
+
+    code {
+      border-radius: 6px;
+      padding: 2px 6px;
+      background: #efe8df;
+      font-family: Consolas, monospace;
+      font-size: 0.94em;
+    }
+
+    .notice {
+      margin-top: 18px;
+      border-left: 4px solid #a9162f;
+      padding: 14px 16px;
+      background: #fff;
+      font-weight: 800;
+    }
+
+    @media (max-width: 720px) {
+      .button-row,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p><b>HAO Studio</b></p>
+      <h1>상세페이지 AI 제작툴 인수인계 자료</h1>
+      <p>이 폴더는 고객 작성폼과 내부 관리자툴을 함께 전달하기 위한 공유 패키지입니다. 처음 받는 분은 이 파일부터 확인하면 됩니다.</p>
+      <div class="button-row">
+        <a class="button secondary" href="index.html">내부 관리자툴 열기</a>
+        <a class="button" href="project-form.html">고객 작성폼 열기</a>
+      </div>
+      <p class="notice">고객에게 파일 하나만 따로 보낼 때는 <code>customer-form-standalone.html</code>을 보내세요. <code>project-form.html</code>만 단독 전달하면 디자인이 깨질 수 있습니다.</p>
+    </section>
+
+    <h2>사용 흐름</h2>
+    <div class="card">
+      <ol>
+        <li>고객이 <code>project-form.html</code>에서 제품 정보, 컨셉, 강점, 인증, 옵션, 참고 URL을 작성합니다.</li>
+        <li>내부 담당자가 <code>index.html</code>에서 <b>고객 작성 내용 불러오기</b>를 누릅니다.</li>
+        <li>업체명을 선택하면 고객 입력 내용이 상담 요약, 요청사항, 강조 요소, USP, 참고 링크로 자동 정리됩니다.</li>
+        <li>내부툴에서 A/B 시안 생성, 섹션 수정, 고객 발송 문안, 제작 전달 자료를 이어서 확인합니다.</li>
+      </ol>
+    </div>
+
+    <h2>주요 파일</h2>
+    <div class="grid">
+      <div class="card">
+        <b>인수인계 시작</b>
+        <p><code>START_HERE.html</code><br>이 안내 화면입니다.</p>
+      </div>
+      <div class="card">
+        <b>내부 관리자툴</b>
+        <p><code>index.html</code><br>고객 작성 내용 불러오기와 시안 생성 흐름을 확인합니다.</p>
+      </div>
+      <div class="card">
+        <b>고객 작성폼</b>
+        <p><code>project-form.html</code><br>폴더 전체를 받은 상태에서 여는 고객 입력 화면입니다.</p>
+      </div>
+      <div class="card">
+        <b>고객 단일 공유용</b>
+        <p><code>customer-form-standalone.html</code><br>파일 하나만 보내도 디자인과 동작이 유지됩니다.</p>
+      </div>
+      <div class="card">
+        <b>짧은 공유 안내</b>
+        <p><code>SHARE_README.md</code><br>전달받은 사람이 읽을 요약 문서입니다.</p>
+      </div>
+      <div class="card">
+        <b>확인 체크리스트</b>
+        <p><code>HANDOFF_CHECKLIST.md</code><br>테스트 순서와 현재 한계를 정리했습니다.</p>
+      </div>
+    </div>
+
+    <h2>온라인 주소</h2>
+    <div class="card">
+      <ul>
+        <li>내부 관리자툴: <a href="https://mina0313.github.io/haostudio-AI/">https://mina0313.github.io/haostudio-AI/</a></li>
+        <li>고객 작성폼: <a href="https://mina0313.github.io/haostudio-AI/project-form.html">https://mina0313.github.io/haostudio-AI/project-form.html</a></li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>

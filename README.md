@@ -4,6 +4,7 @@
 
 ## 바로 열기
 
+- 인수인계 시작: `START_HERE.html`
 - 고객 작성폼: `project-form.html`
 - 고객 작성폼 단일파일: `customer-form-standalone.html`
 - 내부 관리자툴: `index.html`
@@ -24,6 +25,7 @@ GitHub Pages 주소:
 ## 폴더 구성
 
 - `index.html`: 내부 관리자툴 화면
+- `START_HERE.html`: 인수인계 시작 안내 화면
 - `app.js`: 내부 관리자툴 동작 및 시안 생성 로직
 - `project-form.html`: 고객 작성폼
 - `project-form.js`: 고객 작성폼 저장 및 원고 생성 로직
@@ -38,4 +40,4 @@ GitHub Pages 주소:
 
 고객에게 파일 하나만 보낼 때는 `customer-form-standalone.html`을 보내세요. `project-form.html`만 단독으로 보내면 `styles.css`, `project-form.js`를 같이 찾지 못해 디자인과 단계 이동이 깨질 수 있습니다.
 
-내부 담당자나 개발자에게 전달할 때는 폴더 전체 또는 압축파일 전체를 전달하세요.
+내부 담당자나 개발자에게 전달할 때는 폴더 전체 또는 압축파일 전체를 전달하고, 먼저 `START_HERE.html`을 열라고 안내하세요.
